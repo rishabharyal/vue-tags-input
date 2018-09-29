@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VueJS Tags Input</title>
+	<script src="https://unpkg.com/vue"></script>
+</head>
+
+<style type="text/css">
+	* {
+	  padding: 0;
+	  margin: 0;
+	}
+
+	#box-holder {
+	  width: 400px;
+	  margin: 100px auto;
+	}
+
+	#app {
+	  background: #1abc9c;
+	  width: auto;
+	  border-radius: 2px;
+	  padding: 10px;
+	}
+
+	#app .item {
+	  display: inline-block;
+	  padding: 5px;
+	  background: #EEE;
+	  color: #000;
+	  margin: 2px;
+	  border-radius: 2px;
+	  font-size: 14px;
+	}
+
+	#app input {
+	  background: transparent;
+	  border: none;
+	  outline: none;
+	  padding: 3px;
+	  border-radius: 2px;
+	  margin: 2px;
+	  width: 100px;
+	  font-size: 14px;
+	  color: #FFF;
+	}
+</style>
+
+<body>
+	<div id="box-holder">
+	  <div id="app">
+	    <div class="item" v-for="item in items" v-on:click="removeItem(item)">{{ item }}</div>
+	    <input type="text" v-model="item" placeholder="Add New" v-on:keyup="handleKeyPress($event)">
+	  </div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	new Vue({
+	  el: '#app',
+	  data: {
+	    items: [
+	    	"Apple",
+	      "Banana",
+	      "Carrot",
+	      "Mango",
+	      "Litchi",
+	      "Avocado",
+	      "Watermelon",
+	      "Pumpkin"
+	    ],
+	    item: "",
+	    deletable: true
+	  },
+	  methods: {
+	    handleKeyPress(event) {
+	    	if (event.keyCode == 13) {
+	      	if (this.item != "" && !this.items.includes(this.item)) {
+	          this.items.push(this.item);
+	        }
+	        this.item = "";
+	        this.deletable = true;
+	        return true;
+	      }
+	      if (event.keyCode == 8) {
+	      	if (this.item == "") {
+	          if (this.deletable) {
+	            this.items.pop();
+	          }
+	          this.deletable = true;
+	        }
+	        return true;
+	      }
+	      this.deletable = false;
+	    },
+	    removeItem: function(valueToRemove) {
+	    	this.items = this.items.filter(function(value, index, array) {      
+	      	return value != valueToRemove;
+	      });
+	    }
+	  }
+	});
+</script>
+</html>
